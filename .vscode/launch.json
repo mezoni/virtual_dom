@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "test_patch.dart",
+            "type": "dart",
+            "request": "launch",
+            "program": "test/test_patch.dart"
+        },
+        {
+            "name": "web/index.dart",
+            "type": "dart",
+            "request": "launch",
+            "program": "web/index.dart"
+        }
+    ]
+}
