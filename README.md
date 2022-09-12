@@ -292,7 +292,7 @@ For these purposes, virtual nodes have special procedures that are able to rende
 Safely, in this case means using try/catch statements.  
 But what to do with the information about these errors?  
 There is a special class `ErrorReport` for this purpose.  
-The virtual component contains a field with a value of type `ValueNotifier<ErrorReport?>? errorReport`.  
+The virtual component contains a field `ValueNotifier<ErrorReport?>? errorReport`.  
 By default, this field is not initialized, which means that this virtual component does not take responsibility for error reporting.  
 But as soon as this value is set (in some component), it will mean that this component takes over the task of displaying error messages.  
 
@@ -303,7 +303,7 @@ In this case, it would be more correct to pass the value `ValueNotifier<ErrorRep
 Because the principles of virtualization do not prevent children from "living their own life" (being rendered at least once) they will continue to exist and function even in a "broken" parent.  
 And in this case, they will be quite capable of displaying error reports.  
 
-All the parent has to do is initialize the `Component.errorReport` field and render the child element to which this value will be passed.  
+All the parent has to do is initialize the `VComponent.errorReport` field and render the child element to which this value will be passed.  
 The child element (component) should track changes to this value (watch) and output the changes (error reports).  
 
 Example can be found here: https://github.com/mezoni/virtual_dom/blob/master/example/example.dart
