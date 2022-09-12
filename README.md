@@ -2,7 +2,7 @@
 
 The Virtual DOM is a small, lightweight, low-level implementation of the Virtual DOM.
 
-Version: 0.1.0
+Version: 0.1.1
 
 ## What is this software and what is it not?
 
@@ -284,3 +284,32 @@ class _Component1 extends Component {
 The `..useShadowRoot()` in this case will be applied to the returned element (in this case, the topmost `h('div')`) and, as a result, the same element will be returned (and configured to use Shadow Root).  
 Configuring an already used node (already placed in the tree) leads to incorrect operation.  
 But this does not mean that it is impossible to return a new, any node. All these states are tracked, recognized as different, and everything will work correctly.  
+
+## Render error reporting
+
+When errors occur during rendering, the best way in this situation is to report this error.  
+For these purposes, virtual nodes have special procedures that are able to render safely.  
+Safely, in this case means using try/catch statements.  
+But what to do with the information about these errors?  
+There is a special class `ErrorReport` for this purpose.  
+The virtual component contains a field with a value of type `ValueNotifier<ErrorReport?>? errorReport`.  
+By default, this field is not initialized, which means that this virtual component does not take responsibility for error reporting.  
+But as soon as this value is set (in some component), it will mean that this component takes over the task of displaying error messages.  
+
+It would seem that everything is simple, but not everything is so simple.  
+What happens if a rendering error occurs in this component, which itself should display error messages?  
+Since this component will no longer be re-rendered, this will result in no error report being displayed.  
+In this case, it would be more correct to pass the value `ValueNotifier<ErrorReport?>` to the child component.  
+Because the principles of virtualization do not prevent children from "living their own life" (being rendered at least once) they will continue to exist and function even in a "broken" parent.  
+And in this case, they will be quite capable of displaying error reports.  
+
+All the parent has to do is initialize the `Component.errorReport` field and render the child element to which this value will be passed.  
+The child element (component) should track changes to this value (watch) and output the changes (error reports).  
+
+Example can be found here: https://github.com/mezoni/virtual_dom/blob/master/example/example.dart
+
+This is not the only possible way to accomplish this task, but it is a fairly optimal way.  
+
+The nesting of components that take responsibility for displaying error messages can be any, and in case of an error, the closest one will be used.  
+The `VNode.findErrorReport()` method is responsible for finding the closest or only component.  
+It checks the current component and then iterates through all the parents up to the very top.
