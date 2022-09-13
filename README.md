@@ -2,7 +2,7 @@
 
 The Virtual DOM is a small, lightweight, low-level implementation of the Virtual DOM.
 
-Version: 0.1.1
+Version: 0.1.2
 
 ## What is this software and what is it not?
 
@@ -91,7 +91,7 @@ Now it will be impossible not to distinguish these components from each other an
 
 Helper function means some global function to simplify the use of this software.  
 This is a pseudo concepts and is not a convention.  
-There are currently two important helper functions:  
+Currently there are several helper functions:  
 - h
 - mount
 - styles
@@ -125,7 +125,71 @@ final app = document.getElementById('app')!;
 mount(app, App());
 ```
 
-TODO: Add explanation for other helpers
+The `styles` function helps to create HTML `style` attribute.
+
+Example:
+
+```dart
+final style = styles({
+  'background-color': 'black',
+  'color': 'red',
+  'display': 'block',
+  'margin': '8px',
+  'padding': '8px',
+});
+return h(
+  'div',
+  {'style': style},
+  h('div', [for (final line in lines) h('div', line)]),
+);
+```
+
+The `vHtml` function helps to create `VHtml` node.  
+In fact, it only calls the constructor, but it plays an important role - it hides implementation details. Since it is not recommended to use virtual nodes directly in the `Component.render()` method.
+
+Example:
+
+```dart
+Object render() {
+  final style = styles({
+   'color': color,
+  });
+  return h('div', {
+    'style': style
+  }, [
+    vHtml('style', _style),
+    h('div', {
+      'class': 'spinner'
+    }, [
+      h('div', {'class': 'bounce1'}),
+      h('div', {'class': 'bounce2'}),
+      h('div', {'class': 'bounce3'}),
+    ]),
+   ])
+    ..useShadowRoot();
+}
+```
+
+The `vKey` function helps to add a key (most often a collection element key) to a virtual node.  
+
+Example:
+
+```dart
+Object render() {
+  final changeState = State.change();
+  final application = App.get();
+  Listener.use(application.windows, changeState);
+  final uiFactory = application.uiFactory;
+  final list = [];
+  final windows = application.windows.value;
+  for (final window in windows.values) {
+    final windowListItem = uiFactory.createWindowListItem(window);
+    final item = h('div', windowListItem);
+    list.add(vKey(window.uri, item));
+  }
+   return h('div', list);
+}
+```
 
 ## Application component
 
