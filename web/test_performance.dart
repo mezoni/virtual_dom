@@ -3,6 +3,7 @@ import 'dart:html';
 import 'dart:math';
 
 import 'package:virtual_dom/components/component.dart';
+import 'package:virtual_dom/errors/error_report.dart';
 import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_value_watcher.dart';
 import 'package:virtual_dom/helpers/h.dart';
@@ -10,19 +11,26 @@ import 'package:virtual_dom/helpers/mount.dart';
 import 'package:virtual_dom/helpers/vkey.dart';
 import 'package:virtual_dom/listenable/listenable.dart';
 
+import 'error_reporter.dart';
+
 void main(List<String> args) {
   final app = document.getElementById('app')!;
   mount(app, _App());
 }
 
-Future _delay() => Future.delayed(Duration(microseconds: 10));
+final errorReport = ValueNotifier<ErrorReport?>(null);
+
+Future _delay() => Future.delayed(Duration(seconds: 1));
 
 class _App extends Component {
   @override
   Object render() {
     final items = ValueNotifier<List<_Item>>([]);
     items.value = List.generate(10000, (i) => _Item());
-    return _LongListWidget(items);
+    return h('div', [
+      ErrorReporter(errorReport),
+      _LongListWidget(items),
+    ]);
   }
 }
 
@@ -87,25 +95,31 @@ class _LongListWidget extends Component {
 
       event.preventDefault();
       Timer.run(() async {
-        final count1 = count.value;
-        nonUiInfo.value = 'Inserting $count1 random elements to List';
-        await _delay();
-        final sw = Stopwatch();
-        sw.start();
-        final random = Random();
-        for (var i = 0; i < count1; i++) {
-          final length = items1.length;
-          final index = random.nextInt(length - 1);
-          items1.insert(index, _Item());
-        }
+        await ErrorReport.runAsync(() async {
+          final count1 = count.value;
+          nonUiInfo.value = 'Inserting $count1 random elements to List';
+          await _delay();
+          final sw = Stopwatch();
+          sw.start();
+          final random = Random();
+          for (var i = 0; i < count1; i++) {
+            final length = items1.length;
+            if (length < 2) {
+              items1.add(_Item());
+            } else {
+              final index = random.nextInt(length - 1);
+              items1.insert(index, _Item());
+            }
+          }
 
-        sw.stop();
-        items.notifyListeners();
-        nonUiInfo.value =
-            'Inserted $count1 random elements to List in ${sw.elapsedMilliseconds / 1000} sec';
-        await _delay();
-        changeState();
-        measure();
+          sw.stop();
+          items.notifyListeners();
+          nonUiInfo.value =
+              'Inserted $count1 random elements to List in ${sw.elapsedMilliseconds / 1000} sec';
+          await _delay();
+          changeState();
+          measure();
+        });
       });
     }
 

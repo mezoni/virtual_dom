@@ -168,6 +168,8 @@ abstract class VNode {
       final errorReport = findErrorReport();
       if (errorReport != null) {
         errorReport.value = ErrorReport(e, s);
+      } else {
+        ErrorReport.global.value = ErrorReport(e, s);
       }
 
       final this1 = this;
