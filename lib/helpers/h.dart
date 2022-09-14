@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import '../components/component.dart';
+import '../errors/wrapped_exception.dart';
 import '../virtual_dom/velement.dart';
 import '../virtual_dom/vnode.dart';
 import '../virtual_dom/vnode_entry.dart';
@@ -213,9 +214,11 @@ VNode _createNode(Object? data) {
   try {
     final result = VNodeFactory.createVNode(data);
     return result;
-  } catch (e) {
-    throw ArgumentError(
-        "An error occurred while creating a child element from the value '${data.runtimeType}'");
+  } catch (e, s) {
+    throw WrappedException(
+        "An error occurred while creating a child element from the value '${data.runtimeType}'",
+        e,
+        s);
   }
 }
 

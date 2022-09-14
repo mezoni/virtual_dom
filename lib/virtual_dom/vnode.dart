@@ -109,16 +109,24 @@ abstract class VNode {
       }
     }
 
-    for (final key in oldListeners.keys) {
-      final listener = oldListeners[key];
-      final wrapper = wrapListener(listener);
-      node1.removeEventListener(key, wrapper);
+    if (oldListeners.isNotEmpty) {
+      for (final key in oldListeners.keys) {
+        final listener = oldListeners[key];
+        final wrapper = wrapListener(listener);
+        node1.removeEventListener(key, wrapper);
+      }
+
+      oldListeners.clear();
     }
 
-    for (final key in newListeners.keys) {
-      final listener = newListeners[key];
-      final wrapper = wrapListener(listener);
-      node1.addEventListener(key, wrapper);
+    if (newListeners.isNotEmpty) {
+      for (final key in newListeners.keys) {
+        final listener = newListeners[key];
+        final wrapper = wrapListener(listener);
+        node1.addEventListener(key, wrapper);
+      }
+
+      oldListeners.addAll(newListeners);
     }
   }
 
