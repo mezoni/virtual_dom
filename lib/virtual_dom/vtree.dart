@@ -165,12 +165,7 @@ class VTree {
   }
 
   static Object? _getKey(VNodeEntry entry) {
-    var vNode = entry.vNode;
-    if (vNode.kind != VNodeKind.element) {
-      return null;
-    }
-
-    vNode = vNode as VElement;
+    final vNode = entry.vNode;
     return vNode.key;
   }
 }

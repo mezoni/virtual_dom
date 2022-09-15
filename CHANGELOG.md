@@ -1,3 +1,8 @@
+## 0.1.5
+
+Fixed bug in `VTree._getKey()`. At the very beginning of the implementation, virtual keys could only be specified for `VElement` nodes (via the `key` attribute), now virtual keys could be specified for any kind of nodes (in the `Object? VNode.key` field). This was not taken into account and was incorrect work. Now this shortcoming has been eliminated.
+
+
 ## 0.1.4
 
 - Added `ValueNotifier<ErrorReport?> global` static field to `ErrorReport` class.
