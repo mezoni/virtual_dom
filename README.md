@@ -377,3 +377,36 @@ This is not the only possible way to accomplish this task, but it is a fairly op
 The nesting of components that take responsibility for displaying error messages can be any, and in case of an error, the closest one will be used.  
 The `VNode.findErrorReport()` method is responsible for finding the closest or only component.  
 It checks the current component and then iterates through all the parents up to the very top.
+
+## Global error reporting
+
+It is not a good idea to add a global `ErrorReport` instance, but sometimes it is necessary if you want to know where the error is.  
+The class `ErrorReport` has a static field `ValueNotifier<ErrorReport?> global` which can be used under any circumstances.  
+But, as always, not everything is so simple here. 
+The whole problem is that errors that occur in UI elements and in all other places cannot be considered as errors that can be caught in one way.  
+Errors that occur in UI elements are caught by the rendering procedures.  All other errors are not caught by the rendering procedures.  
+This means that need to take some special action for this.  
+One possible action is to create a global `ErrorReport` for this purpose.  
+Keep in mind that `ErrorReport` by itself does nothing but store information about the error.  
+That is, it is necessary to create a UI component to display an error report.  
+As a result, two possible solutions for these purposes.  
+- Global error report for all cases
+- Global error report for all cases, local error reports for UI
+
+Example of using global error reporting outside of UI procedures:
+
+```dart
+Timer.run() {
+  ErrorReport.run(() {
+    try 'Some error';
+  });
+});
+
+
+Timer.run() async {
+  return ErrorReport.runAsync(() async {
+    await f();
+    try 'Some error';
+  });
+});
+```
