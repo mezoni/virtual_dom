@@ -2,7 +2,7 @@
 
 The Virtual DOM is a small, lightweight, low-level implementation of the Virtual DOM.
 
-Version: 0.1.5
+Version: 0.1.6
 
 ## What is this software and what is it not?
 
