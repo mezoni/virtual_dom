@@ -2,7 +2,7 @@
 
 The Virtual DOM is a small, lightweight, low-level implementation of the Virtual DOM.
 
-Version: 0.1.6
+Version: 0.1.7
 
 ## What is this software and what is it not?
 
@@ -92,6 +92,7 @@ Now it will be impossible not to distinguish these components from each other an
 Helper function means some global function to simplify the use of this software.  
 This is a pseudo concepts and is not a convention.  
 Currently there are several helper functions:  
+- el
 - h
 - mount
 - styles
@@ -190,6 +191,8 @@ Object render() {
    return h('div', list);
 }
 ```
+
+TODO: Add explanation for other helper functions
 
 ## Application component
 

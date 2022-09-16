@@ -101,14 +101,20 @@ class _LongListWidget extends Component {
           await _delay();
           final sw = Stopwatch();
           sw.start();
-          final random = Random();
-          for (var i = 0; i < count1; i++) {
-            final length = items1.length;
-            if (length < 2) {
+          if (items1.isEmpty) {
+            for (var i = 0; i < count1; i++) {
               items1.add(_Item());
-            } else {
-              final index = random.nextInt(length - 1);
-              items1.insert(index, _Item());
+            }
+          } else {
+            final random = Random();
+            for (var i = 0; i < count1; i++) {
+              final length = items1.length;
+              if (length < 2) {
+                items1.add(_Item());
+              } else {
+                final index = random.nextInt(length - 1);
+                items1.insert(index, _Item());
+              }
             }
           }
 
@@ -151,7 +157,7 @@ class _LongListWidget extends Component {
         sw.stop();
         items.notifyListeners();
         nonUiInfo.value =
-            'Removed $count1 elements random from List in ${sw.elapsedMilliseconds / 1000} sec';
+            'Removed $count1 random elements from List in ${sw.elapsedMilliseconds / 1000} sec';
         await _delay();
         changeState();
         measure();

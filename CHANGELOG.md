@@ -1,10 +1,14 @@
+## 0.1.7
+
+- Added helper function `el`.
+
 ## 0.1.6
 
 - Added description to `README.md` file for using global error reporting for non-UI cases.
 
 ## 0.1.5
 
-Fixed bug in `VTree._getKey()`. At the very beginning of the implementation, virtual keys could only be specified for `VElement` nodes (via the `key` attribute), now virtual keys could be specified for any kind of nodes (in the `Object? VNode.key` field). This was not taken into account and was incorrect work. Now this shortcoming has been eliminated.
+- Fixed bug in `VTree._getKey()`. At the very beginning of the implementation, virtual keys could only be specified for `VElement` nodes (via the `key` attribute), now virtual keys could be specified for any kind of nodes (in the `Object? VNode.key` field). This was not taken into account and was incorrect work. Now this shortcoming has been eliminated.
 
 
 ## 0.1.4
