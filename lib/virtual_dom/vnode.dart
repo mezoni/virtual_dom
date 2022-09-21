@@ -93,17 +93,19 @@ abstract class VNode {
       final Map<String, void Function(Event event)> oldListeners,
       final Map<String, void Function(Event event)> newListeners) {
     final node1 = node as Element;
-    final keys = {...oldAttributes.keys, ...newAttributes.keys};
-    for (final key in keys) {
-      final oldValue = oldAttributes[key];
-      final newValue = newAttributes[key];
-      if (oldValue != newValue) {
-        if (newValue == null || newValue == false) {
-          node1.removeAttribute(key);
-          oldAttributes.remove(key);
-        } else {
-          node1.setAttribute(key, newValue);
-          oldAttributes[key] = newValue;
+    if (oldAttributes.isNotEmpty || newAttributes.isNotEmpty) {
+      final keys = {...oldAttributes.keys, ...newAttributes.keys};
+      for (final key in keys) {
+        final oldValue = oldAttributes[key];
+        final newValue = newAttributes[key];
+        if (oldValue != newValue) {
+          if (newValue == null || newValue == false) {
+            node1.removeAttribute(key);
+            oldAttributes.remove(key);
+          } else {
+            node1.setAttribute(key, newValue);
+            oldAttributes[key] = newValue;
+          }
         }
       }
     }

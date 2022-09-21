@@ -1,6 +1,22 @@
 /// The application component is the building block for creating user interface
 /// controls.
 abstract class Component {
+  /// This field is intended to specify a value, which will indicate that the
+  /// component requires rerendering if the previous value of this key differs
+  /// from the current one.
+  ///
+  /// Usually the values for the key are taken from the current arguments.
+  ///
+  /// Example:
+  ///
+  /// ```dart
+  /// ItemRow({
+  ///   required this.dataItem,
+  ///   required this.selected,
+  ///})  : super(effectKey: Key([dataItem.label, selected]), key: dataItem.id);
+  /// ```
+  final Object? effectKey;
+
   /// The [key] is used to identify components of the same type.
   ///
   /// Instances of components of the same type are considered identical. This is
@@ -21,7 +37,10 @@ abstract class Component {
   /// ```
   final Object? key;
 
-  const Component({this.key});
+  const Component({
+    this.effectKey,
+    this.key,
+  });
 
   /// The "render" method is the only method that does all the work.
   ///

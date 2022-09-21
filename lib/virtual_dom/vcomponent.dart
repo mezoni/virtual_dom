@@ -12,7 +12,7 @@ class VComponent extends VNode {
 
   VNode? child;
 
-  final Component component;
+  Component component;
 
   Map<String, Map<String, Object?>> context = {};
 
@@ -98,7 +98,13 @@ class VComponent extends VNode {
 
   void _rebuild(VNode newVNode, bool canDispose) {
     key = newVNode.key;
-    if (dirty) {
+    newVNode = newVNode as VComponent;
+    final component1 = component;
+    final component2 = newVNode.component;
+    component = component2;
+    final oldEffectKey = component1.effectKey;
+    final newEffectKey = component2.effectKey;
+    if (dirty || oldEffectKey != newEffectKey) {
       dirty = false;
       final oldChild = child!;
       final newChild = _renderNew();

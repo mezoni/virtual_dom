@@ -1,6 +1,7 @@
 ## 0.1.8
 
 - Minor improvements in rendering procedures.
+- Added concept of component effect key. The field `Object? Component.effectKey` has been added for this purpose. This field is intended to specify a value, which will indicate that the component requires rerendering if the previous value of this key differs from the current one. Usually the values for the key are taken from the current arguments.
 
 ## 0.1.7
 
