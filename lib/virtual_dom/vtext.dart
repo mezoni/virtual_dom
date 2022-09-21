@@ -3,7 +3,7 @@ import 'dart:html';
 import 'vnode.dart';
 
 class VText extends VNode {
-  final String text;
+  String text;
 
   VText(this.text);
 
@@ -48,6 +48,13 @@ class VText extends VNode {
   }
 
   void _rebuild(VNode newVNode, bool canDispose) {
+    newVNode = newVNode as VText;
+    final newText = newVNode.text;
+    if (text != newText) {
+      text = newText;
+      (node as Text).data = newText;
+    }
+
     key = newVNode.key;
     return;
   }

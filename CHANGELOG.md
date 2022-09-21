@@ -1,3 +1,7 @@
+## 0.1.8
+
+- Minor improvements in rendering procedures.
+
 ## 0.1.7
 
 - Added helper function `el`.

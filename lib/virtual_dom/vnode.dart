@@ -6,7 +6,6 @@ import '../listenable/listenable.dart';
 import 'vcomponent.dart';
 import 'velement.dart';
 import 'vhtml.dart';
-import 'vtext.dart';
 
 /// Virtual node.
 abstract class VNode {
@@ -212,13 +211,7 @@ abstract class VNode {
         vNode2 = vNode2 as VHtml;
         return vNode1.tagName == vNode2.tagName;
       case VNodeKind.text:
-        if (vNode2.kind == VNodeKind.text) {
-          vNode1 = vNode1 as VText;
-          vNode2 = vNode2 as VText;
-          return vNode1.text == vNode2.text;
-        }
-
-        return false;
+        return vNode2.kind == VNodeKind.text;
     }
   }
 }

@@ -7,7 +7,6 @@ import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_error_report.dart';
 import 'package:virtual_dom/helpers/h.dart';
 import 'package:virtual_dom/helpers/mount.dart';
-import 'package:virtual_dom/helpers/vkey.dart';
 import 'package:virtual_dom/virtual_dom.dart';
 
 import 'error_reporter.dart';
@@ -39,24 +38,21 @@ class _Test extends Component {
       case 0:
         setStep(5);
         return h('div', [
-          vKey('k1', h('div', 'Text1')),
+          'Text2',
           h('h1', 'Text2'),
         ]);
       case 5:
         setStep(10);
-        return h('div', [
-          h('div', 'Text1'),
-          vKey('k1', h('div', 'Text1')),
-        ]);
+        return h(
+          'div',
+          [h('h1', 'Text2'), 'Text2'],
+        );
       case 10:
         setStep(20);
-        return h('div', [
-          vKey('k1', h('div', 'Text30')),
-          h('div', 'Text31'),
-        ]);
+        return h('div', 'Text1');
       case 20:
         setStep(30);
-        return 'Text1';
+        return h('div', '');
       default:
         return '';
     }

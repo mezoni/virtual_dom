@@ -22,18 +22,50 @@ class VTree {
       return;
     }
 
-    final diff = Diff();
-    final patches =
-        diff.diff(oldList, newList, getKey: _getKey, isEqual: _isEqual);
-    _removed = {};
-    _patch(patches, oldList);
-    if (_removed.isNotEmpty) {
-      for (final element in _removed) {
-        element.dispose();
+    var oldListWithKeys = false;
+    var oldEntry = oldList.isEmpty ? null : oldList.first;
+    while (oldEntry != null) {
+      final vNode = oldEntry.vNode;
+      if (vNode.key != null) {
+        oldListWithKeys = true;
+        break;
       }
 
-      _removed = const {};
+      oldEntry = oldEntry.next;
     }
+
+    if (oldListWithKeys) {
+      var newWithKeys = false;
+      var newEntry = newList.isEmpty ? null : newList.first;
+      while (newEntry != null) {
+        final vNode = newEntry.vNode;
+        if (vNode.key != null) {
+          newWithKeys = true;
+          break;
+        }
+
+        newEntry = newEntry.next;
+      }
+
+      if (newWithKeys) {
+        final diff = Diff();
+        final patches =
+            diff.diff(oldList, newList, getKey: _getKey, isEqual: _isEqual);
+        _removed = {};
+        _patch(patches, oldList);
+        if (_removed.isNotEmpty) {
+          for (final element in _removed) {
+            element.dispose();
+          }
+
+          _removed = const {};
+        }
+
+        return;
+      }
+    }
+
+    _updateWithoutKeys(oldList, newList);
   }
 
   void _apply(Patch<VNodeEntry> patch) {
@@ -156,6 +188,51 @@ class VTree {
       apply: _apply,
       createEntry: _createEntry,
     );
+  }
+
+  void _updateWithoutKeys(
+      LinkedList<VNodeEntry> oldList, LinkedList<VNodeEntry> newList) {
+    var oldEntry = oldList.isEmpty ? null : oldList.first;
+    var newEntry = newList.isEmpty ? null : newList.first;
+    while (oldEntry != null && newEntry != null) {
+      final oldVNode = oldEntry.vNode;
+      final newVNode = newEntry.vNode;
+      final vNode = oldVNode.render(newVNode, true);
+      if (oldVNode != vNode) {
+        final newEntry = VNodeEntry(vNode);
+        oldEntry.insertBefore(newEntry);
+        final next = oldEntry.next;
+        oldEntry.unlink();
+        oldEntry = next;
+      } else {
+        oldEntry = oldEntry.next;
+      }
+
+      newEntry = newEntry.next;
+    }
+
+    if (oldEntry != null) {
+      while (oldEntry != null) {
+        final vNode = oldEntry.vNode;
+        final node = vNode.node!;
+        vNode.dispose();
+        node.remove();
+        final next = oldEntry.next;
+        oldEntry.unlink();
+        oldEntry = next;
+      }
+    } else if (newEntry != null) {
+      while (newEntry != null) {
+        final vNode = newEntry.vNode;
+        vNode.renderNew(parent);
+        final node = vNode.node!;
+        parentNode.append(node);
+        final next = newEntry.next;
+        newEntry.unlink();
+        oldList.add(newEntry);
+        newEntry = next;
+      }
+    }
   }
 
   static VNodeEntry _createEntry(VNodeEntry entry) {
