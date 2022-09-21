@@ -34,58 +34,15 @@ To be more precise, there are two kinds of components - virtual components and a
 A virtual component wraps an application component.  
 Component usage is the usage of application components.  
 
-## About the difference between virtual node keys and component keys
+## Virtual node keys, component keys and component effect keys
 
 Virtual node keys must be unique within the parent.  
 The main (and most logical) purpose of these keys is to index the elements of collections (similar to database primary keys).  
 This is required in order to provide a quick computation of the presence of changes in the tree (performing only the key comparison operation).  
 
-Why is this needed?  
-There are two types of resource-intensive computations for the DOM tree changes.  
-The first and most resource-intensive computation is the content painting performed by the browser.  
-What is the meaning of these words?  
-The point is that if some node of the DOM tree is moved to another place in the tree, then, despite the fact that this node has not been changed, it may take considerable time to repaint it.  
-The virtual tree in this case performs the task of minimizing the removals of nodes from the tree.  
-This is achieved by updating (replacing) the state (such as attributes and listeners) of the DOM node to the required state (new attributes and listeners), in case the nodes are physically and logically similar. Of course, this also implies processing (updating) child elements.  
-Physical analogy implies an analogy in terms of the DOM, logical mapping implies the logic of the application and the principles of data virtualization (nodes and components).  
-This prevents moving (actually removing) nodes from the DOM tree, replacing this operation with modifying (rebuilding) the comparable nodes.  
-The operation of rebuilding the nodes is much more time efficient than the operation of the browser repainting the nodes again in a new tree location.  
+Component keys can be used to identify instances of components of the same type.  
 
-The second and also quite resource-intensive computation is the rendering of the component content, which is performed by the application component when the `render` method is executed and by the renderer procedures after that.  
-The need to perform these operations is minimized by itself in the first case, and at the same time, to minimize such (unreasonable, repeated) renderings, the method of caching the rendered content is used.  
-In principle, rendered content caching is one of the essences of virtualization.  
-To improve the identification of application components when using cached results (in fact, with multiple reuse of these results), application component keys are provided.  
-Component keys are not used to identify the elements of the collection in the tree and therefore may not be unique.  
-Component keys are used to determine the identity of components of the same runtime type (and in this context they must be unique).  
-
-Why is this needed?  
-This is required in order to determine whether the component state needs to be reset (and, as a result, it must be rendered as a new instance).  
-
-From the point of view of virtualization, any component of the same runtime type looks the same regardless of what arguments are passed to the component when it is created.  
-This happens because preprocessing, separate compilation and building are not used - everything is done in runtime.  
-But the "outside world" does not have access to the component arguments, and the only possible way to do this is to use component keys for that purpose.  
-
-Example:
-
-```dart
-StartFromThisValueWidget(0);
-StartFromThisValueWidget(41);
-```
-
-With virtualization, it is impossible to distinguish these two components from each other, because each of them is a `black box`.  
-Considering that caching is very heavily used during virtualization, if a component of the same runtime type is created with different arguments, then it will be considered an instance of an already existing component and its state will not be destroyed.  
-The only way to determine differences is to let the component itself decide this.  
-An example when the component itself decides this:
-
-```dart
-class StartFromThisValueWidget extends Component {
-  int value;
-
-  StartFromThisValueWidget(this.value) : super(key: value);
-}
-```
-
-Now it will be impossible not to distinguish these components from each other and everything will work correctly and the component will be re-rendered only following its logic of work or if its parameters are changed by the "outside world".  
+Component effect keys can be used to indicate that the component requires rerendering if the previous value of this key differs from the current one. Usually the values for the effect key are taken from the current arguments which effect the rerendering process.
 
 ## Helper functions
 
