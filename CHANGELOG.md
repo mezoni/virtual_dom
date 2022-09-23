@@ -1,3 +1,7 @@
+## 0.1.9
+
+- Added `AsyncResult` class to simplify the implementation of handling asynchronous operations in synchronous methods by tracking state changes.
+
 ## 0.1.8
 
 - Minor improvements in rendering procedures.
