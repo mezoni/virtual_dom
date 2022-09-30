@@ -1,3 +1,7 @@
+## 0.1.11
+
+- Changes have been made to the procedure for setting `innerHtml` for `VHtml`. This is now done using `_TrustedHtmlTreeSanitizer`.
+
 ## 0.1.10
 
 - The source code has been modified to reflect the changes made to "analysis_options.yaml".

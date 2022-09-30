@@ -57,7 +57,7 @@ class VHtml extends VNode {
         node1.addEventListener(key, listener);
       }
 
-      node1.innerHtml = html;
+      _setInnerHtml(node1, html);
       node = node1;
     });
   }
@@ -75,7 +75,11 @@ class VHtml extends VNode {
     updateElement(attributes, newAttributes, listeners, newListeners);
     final newHtml = newVNode.html;
     if (html != newHtml) {
-      (node as Element).innerHtml = newHtml;
+      _setInnerHtml(node as Element, newHtml);
     }
+  }
+
+  void _setInnerHtml(Element node, String html) {
+    node.setInnerHtml(html, treeSanitizer: NodeTreeSanitizer.trusted);
   }
 }
