@@ -7,20 +7,20 @@ import '../virtual_dom/vnode_factory.dart';
 VElement el(
   String tag, {
   Map<String, Object> attributes = const {},
-  Map<String, Function(Event event)> listeners = const {},
+  Map<String, void Function(Event event)> listeners = const {},
   Object? child,
   List<Object> children = const [],
-  Function(Event event)? onChange,
-  Function(Event event)? onClick,
-  Function(Event event)? onDblClick,
-  Function(Event event)? onKeyDown,
-  Function(Event event)? onKeyPress,
-  Function(Event event)? onKeyUp,
-  Function(Event event)? onMouseDown,
-  Function(Event event)? onMouseMove,
-  Function(Event event)? onMouseOut,
-  Function(Event event)? onMouseOver,
-  Function(Event event)? onMouseUp,
+  void Function(Event event)? onChange,
+  void Function(Event event)? onClick,
+  void Function(Event event)? onDblClick,
+  void Function(Event event)? onKeyDown,
+  void Function(Event event)? onKeyPress,
+  void Function(Event event)? onKeyUp,
+  void Function(Event event)? onMouseDown,
+  void Function(Event event)? onMouseMove,
+  void Function(Event event)? onMouseOut,
+  void Function(Event event)? onMouseOver,
+  void Function(Event event)? onMouseUp,
 }) {
   if (children.isNotEmpty && child != null) {
     throw ArgumentError(

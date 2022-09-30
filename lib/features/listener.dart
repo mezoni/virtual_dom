@@ -13,7 +13,7 @@ class Listener {
   ///and adds it to the [Listenable] listeners.
   ///
   /// Also removes the listener when the component is disposed.
-  static void use<T>(Listenable listener, void Function() action) {
+  static void use(Listenable listener, void Function() action) {
     return VComponent.run((vComponent) {
       final context = VContext(context: vComponent.context, key: _key);
       final Set<Listenable> listeners = context.init('listeners', () => {});

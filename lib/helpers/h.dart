@@ -34,7 +34,7 @@ VElement h(
 ]) {
   Map<String, Object>? attributes;
   List<VNode>? children;
-  Map<String, Function(Event event)>? listeners;
+  Map<String, void Function(Event event)>? listeners;
   var isAttributesAllowed = true;
   var isChildrenAllowed = true;
   var isListenersAllowed = true;
@@ -114,7 +114,7 @@ VElement h(
       isChildrenAllowed = false;
       final vNode = VNodeFactory.createVNode(argument);
       children = [vNode];
-    } else if (argument is Map<String, Function(Event event)>) {
+    } else if (argument is Map<String, void Function(Event event)>) {
       _checkArgument(
           isListenersAllowed,
           'listeners',

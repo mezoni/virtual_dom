@@ -23,7 +23,7 @@ abstract class VNode {
 
   StackTrace? stackTrace;
 
-  Expando<Function(Event event)>? _listenerWrappers;
+  Expando<void Function(Event event)>? _listenerWrappers;
 
   VNodeKind get kind;
 
@@ -131,7 +131,8 @@ abstract class VNode {
     }
   }
 
-  Function(Event event)? wrapListener(Function(Event event)? listener) {
+  void Function(Event event)? wrapListener(
+      void Function(Event event)? listener) {
     if (listener == null) {
       return listener;
     }

@@ -17,7 +17,7 @@ class _App extends Component {
   @override
   Object render() {
     final step = State.get('step', () => 0);
-    final setStep = State.set('step');
+    final setStep = State.set<int>('step');
     if (step == 0) {
       setStep(1);
       return h('div', [

@@ -27,8 +27,7 @@ class InheritedProperty {
               s);
         }
       } else {
-        final value = context.get(key);
-        return value as T;
+        return context.get(key);
       }
     });
   }

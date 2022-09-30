@@ -1,6 +1,14 @@
 {
     "cSpell.words": [
+        "dblclick",
         "Expando",
+        "keydown",
+        "keypress",
+        "keyup",
+        "mousedown",
+        "mousemove",
+        "mouseout",
+        "mouseup",
         "unawaited",
         "vcomponent",
         "vcontext",

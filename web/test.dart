@@ -217,7 +217,7 @@ class _Test extends Component {
   Object render() {
     final count = State.get('count', () => 0);
     final setCount = State.set<int>('count');
-    final html = State.get('html', () => []);
+    final html = State.get('html', () => <Object>[]);
     final setHtml = State.set<List>('html');
     final pc = State.get<List<Object>>('pc', () => []);
     final setPc = State.set<List<Object>>('pc');

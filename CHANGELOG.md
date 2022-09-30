@@ -1,3 +1,7 @@
+## 0.1.10
+
+- The source code has been modified to reflect the changes made to "analysis_options.yaml".
+
 ## 0.1.9
 
 - Added `AsyncResult` class to simplify the implementation of handling asynchronous operations in synchronous methods by tracking state changes.

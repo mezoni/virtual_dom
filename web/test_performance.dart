@@ -69,7 +69,7 @@ class _LongListWidget extends Component {
     final nonUiInfo = State.get('nonUiInfo', () => ValueNotifier(''));
     final uiInfo = State.get('uiInfo', () => ValueNotifier(''));
     final items1 = items.value;
-    final list = [];
+    final list = <Object>[];
     for (var i = 0; i < items1.length; i++) {
       final item = items1[i];
       final li = h('li', '$item');
