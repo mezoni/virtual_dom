@@ -6,7 +6,7 @@ import 'dart:html';
 import 'package:virtual_dom/async/async_result.dart';
 import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_error_report.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/helpers/mount.dart';
 import 'package:virtual_dom/virtual_dom.dart';
 
@@ -23,7 +23,7 @@ class _App extends Component {
   @override
   Object render() {
     final errorReport = useErrorReport();
-    return h('div', [
+    return el('div', children: [
       ErrorReporter(errorReport),
       _Test(),
     ]);

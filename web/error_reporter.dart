@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:virtual_dom/errors/error_report.dart';
 import 'package:virtual_dom/features/use_value_watcher.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/helpers/styles.dart';
 import 'package:virtual_dom/listenable/listenable.dart';
 import 'package:virtual_dom/virtual_dom.dart';
@@ -19,7 +19,7 @@ class ErrorReporter extends Component {
     useValueWatcher(errorReport);
     final errorReport1 = errorReport.value;
     if (errorReport1 == null) {
-      return h('div', {'display': 'none'});
+      return el('div', attributes: {'display': 'none'});
     } else {
       final lines = const LineSplitter().convert('${errorReport1.error}');
       lines.addAll(const LineSplitter().convert('${errorReport1.stackTrace}'));
@@ -30,10 +30,11 @@ class ErrorReporter extends Component {
         'margin': '8px',
         'padding': '8px',
       });
-      return h(
+      return el(
         'div',
-        {'style': style},
-        h('div', [for (final line in lines) h('div', line)]),
+        attributes: {'style': style},
+        child: el('div',
+            children: [for (final line in lines) el('div', child: line)]),
       );
     }
   }

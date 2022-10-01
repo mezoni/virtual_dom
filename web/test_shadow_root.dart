@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:virtual_dom/components/component.dart';
 import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_error_report.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/helpers/h.dart';
 import 'package:virtual_dom/helpers/mount.dart';
 import 'package:virtual_dom/helpers/vhtml.dart';
@@ -21,7 +22,7 @@ class _App extends Component {
   @override
   Object render() {
     final errorReport = useErrorReport();
-    return h('div', [
+    return el('div', children: [
       ErrorReporter(errorReport),
       _Test(),
     ]);
@@ -38,7 +39,7 @@ class _Test extends Component {
         Timer(Duration(seconds: 2), () {
           setStep(1);
         });
-        return h('div', [
+        return el('div', children: [
           _Component1('Red text 1', 'red'),
           _Component2('Text 1'),
         ]);
@@ -46,12 +47,12 @@ class _Test extends Component {
         Timer(Duration(seconds: 2), () {
           setStep(2);
         });
-        return h('div', [
+        return el('div', children: [
           _Component1('Red text 2', 'red'),
           _Component2('Text 2'),
         ]);
       default:
-        return h('div', [
+        return el('div', children: [
           _Component1('Brown text 3', 'brown'),
           _Component2('Text 3'),
         ]);

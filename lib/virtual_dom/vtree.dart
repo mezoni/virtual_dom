@@ -22,32 +22,32 @@ class VTree {
       return;
     }
 
-    var oldListWithKeys = false;
+    var oldListHasKeys = false;
     var oldEntry = oldList.isEmpty ? null : oldList.first;
     while (oldEntry != null) {
       final vNode = oldEntry.vNode;
       if (vNode.key != null) {
-        oldListWithKeys = true;
+        oldListHasKeys = true;
         break;
       }
 
       oldEntry = oldEntry.next;
     }
 
-    if (oldListWithKeys) {
-      var newWithKeys = false;
+    if (oldListHasKeys) {
+      var newListHasKeys = false;
       var newEntry = newList.isEmpty ? null : newList.first;
       while (newEntry != null) {
         final vNode = newEntry.vNode;
         if (vNode.key != null) {
-          newWithKeys = true;
+          newListHasKeys = true;
           break;
         }
 
         newEntry = newEntry.next;
       }
 
-      if (newWithKeys) {
+      if (newListHasKeys) {
         final diff = Diff();
         final patches =
             diff.diff(oldList, newList, getKey: _getKey, isEqual: _isEqual);

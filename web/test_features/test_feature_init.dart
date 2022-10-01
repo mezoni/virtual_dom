@@ -1,6 +1,6 @@
 import 'package:virtual_dom/features/init.dart';
 import 'package:virtual_dom/features/state.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/virtual_dom.dart';
 
 int _count = 0;
@@ -20,7 +20,7 @@ class _App extends Component {
     final setStep = State.set<int>('step');
     if (step == 0) {
       setStep(1);
-      return h('div', [
+      return el('div', children: [
         _Component10(),
         _Component20(),
         _Component30(),
@@ -83,9 +83,10 @@ class _Component30 extends Component {
         _count--;
       };
     });
-    return h('ul', [
-      h('li', _Component31()),
-    ]);
+    return el(
+      'ul',
+      child: el('li', child: _Component31()),
+    );
   }
 }
 

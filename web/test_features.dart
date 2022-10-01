@@ -5,7 +5,7 @@ import 'dart:html';
 
 import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_error_report.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/helpers/mount.dart';
 import 'package:virtual_dom/virtual_dom.dart';
 
@@ -31,7 +31,7 @@ class _App extends Component {
   @override
   Object render() {
     final errorReport = useErrorReport();
-    return h('div', [
+    return el('div', children: [
       ErrorReporter(errorReport),
       _Test(),
     ]);
@@ -74,12 +74,12 @@ class _Test extends Component {
       }
     }
 
-    return h('div', [
-      h('ul', [
+    return el('div', children: [
+      el('ul', children: [
         for (final entry in results.entries)
-          h(
+          el(
             'li',
-            displayResult(entry),
+            child: displayResult(entry),
           ),
       ]),
       runTest(),

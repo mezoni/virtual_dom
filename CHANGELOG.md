@@ -1,3 +1,7 @@
+## 0.1.12
+
+- The source code of the tests has been changed to use `el` helper instead of `h` helper.
+
 ## 0.1.11
 
 - Changes have been made to the procedure for setting `innerHtml` for `VHtml`. This is now done using `_TrustedHtmlTreeSanitizer`.

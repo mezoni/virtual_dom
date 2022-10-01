@@ -1,7 +1,7 @@
 import 'package:virtual_dom/features/inherited_value.dart';
 import 'package:virtual_dom/features/listener.dart';
 import 'package:virtual_dom/features/state.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/listenable/listenable.dart';
 import 'package:virtual_dom/virtual_dom.dart';
 import 'package:virtual_dom/virtual_dom/vcomponent.dart';
@@ -26,8 +26,8 @@ class _App extends Component {
     final value = InheritedValue.add('value', () => 0);
     _parentValue = value.value;
     if (!_done.value) {
-      return h('div', [
-        h('div', _Component1(onDone)),
+      return el('div', children: [
+        el('div', child: _Component1(onDone)),
       ]);
     } else {
       return '';
@@ -42,8 +42,8 @@ class _Component1 extends Component {
 
   @override
   Object render() {
-    return h('div', [
-      h('div', _Component11(onDone)),
+    return el('div', children: [
+      el('div', child: _Component11(onDone)),
     ]);
   }
 }

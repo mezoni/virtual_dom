@@ -6,7 +6,7 @@ import 'package:virtual_dom/errors/error_report.dart';
 import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_error_report.dart';
 import 'package:virtual_dom/features/use_value_watcher.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/helpers/mount.dart';
 import 'package:virtual_dom/helpers/styles.dart';
 import 'package:virtual_dom/listenable/listenable.dart';
@@ -30,13 +30,14 @@ class _App extends Component {
       throw StateError('Oh, counter greater than 10');
     }
 
-    return h('div', [
+    return el('div', children: [
       _ErrorReporter(errorReport),
-      h('div', [
+      el('div', children: [
         'Last rendered: ${DateTime.now()}',
-        h('p', 'Parent counter (will throw an exception if count > 10)'),
-        h('p', 'Counter: $count'),
-        h('p', h('button', 'Click', {'click': click})),
+        el('p',
+            child: 'Parent counter (will throw an exception if count > 10)'),
+        el('p', child: 'Counter: $count'),
+        el('p', child: el('button', child: 'Click', onClick: click)),
         _CounterWidget(),
       ])
     ]);
@@ -56,12 +57,12 @@ class _CounterWidget extends Component {
       throw StateError('Some error ${DateTime.now()}');
     }
 
-    return h('div', [
+    return el('div', children: [
       'Last rendered: ${DateTime.now()}',
-      h('p', 'Child counter'),
-      h('p', 'Counter: $count'),
-      h('p', h('button', 'Click', {'click': click})),
-      h('p', h('button', 'Throw error', {'click': throwError})),
+      el('p', child: 'Child counter'),
+      el('p', child: 'Counter: $count'),
+      el('p', child: el('button', child: 'Click', onClick: click)),
+      el('p', child: el('button', child: 'Throw error', onClick: throwError)),
     ]);
   }
 }
@@ -76,7 +77,7 @@ class _ErrorReporter extends Component {
     useValueWatcher(errorReport);
     final errorReport1 = errorReport.value;
     if (errorReport1 == null) {
-      return h('div', {'display': 'none'});
+      return el('div', attributes: {'display': 'none'});
     } else {
       final lines = const LineSplitter().convert('${errorReport1.error}');
       lines.addAll(const LineSplitter().convert('${errorReport1.stackTrace}'));
@@ -87,10 +88,11 @@ class _ErrorReporter extends Component {
         'margin': '8px',
         'padding': '8px',
       });
-      return h(
+      return el(
         'div',
-        {'style': style},
-        h('div', [for (final line in lines) h('div', line)]),
+        attributes: {'style': style},
+        child: el('div',
+            children: [for (final line in lines) el('div', child: line)]),
       );
     }
   }

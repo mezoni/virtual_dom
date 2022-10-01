@@ -6,7 +6,7 @@ import 'dart:math';
 
 import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_error_report.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/helpers/mount.dart';
 import 'package:virtual_dom/helpers/vkey.dart';
 import 'package:virtual_dom/virtual_dom.dart';
@@ -69,19 +69,19 @@ List<Object> _getChildren(List<String> html) {
         html.add(text);
         break;
       case 2:
-        list.add(h('div', 'Text1'));
+        list.add(el('div', child: 'Text1'));
         html.add('<div>Text1</div>');
         break;
       case 3:
-        list.add(h('div', 'Text2'));
+        list.add(el('div', child: 'Text2'));
         html.add('<div>Text2</div>');
         break;
       case 4:
-        list.add(h('h1', 'Text1'));
+        list.add(el('h1', child: 'Text1'));
         html.add('<h1>Text1</h1>');
         break;
       case 5:
-        list.add(h('h1', 'Text2'));
+        list.add(el('h1', child: 'Text2'));
         html.add('<h1>Text2</h1>');
         break;
       case 6:
@@ -94,7 +94,8 @@ List<Object> _getChildren(List<String> html) {
           }
         }
 
-        list.add(vKey(key, h('div', {'key': key}, 'Text1')));
+        list.add(
+            vKey(key, el('div', attributes: {'key': key}, child: 'Text1')));
         html.add('<div key="$key">Text1</div>');
         break;
       case 7:
@@ -107,7 +108,7 @@ List<Object> _getChildren(List<String> html) {
           }
         }
 
-        list.add(vKey(key, h('h1', {'key': key}, 'Text2')));
+        list.add(vKey(key, el('h1', attributes: {'key': key}, child: 'Text2')));
         html.add('<h1 key="$key">Text2</h1>');
         break;
       case 8:
@@ -170,7 +171,7 @@ class _App extends Component {
   @override
   Object render() {
     final errorReport = useErrorReport();
-    return h('div', [
+    return el('div', children: [
       ErrorReporter(errorReport),
       _Test(),
     ]);
@@ -257,13 +258,13 @@ class _Test extends Component {
     setPc(children);
     setHtml(html2);
     setCount(count + 1);
-    return h('div', [
+    return el('div', children: [
       if (children.isEmpty)
         ''
       else if (children.length == 1)
         children.first
       else
-        h('div', children)
+        el('div', children: children)
     ]);
   }
 }

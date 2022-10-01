@@ -6,7 +6,7 @@ import 'package:virtual_dom/components/component.dart';
 import 'package:virtual_dom/errors/error_report.dart';
 import 'package:virtual_dom/features/state.dart';
 import 'package:virtual_dom/features/use_value_watcher.dart';
-import 'package:virtual_dom/helpers/h.dart';
+import 'package:virtual_dom/helpers/el.dart';
 import 'package:virtual_dom/helpers/mount.dart';
 import 'package:virtual_dom/helpers/vkey.dart';
 import 'package:virtual_dom/listenable/listenable.dart';
@@ -27,7 +27,7 @@ class _App extends Component {
   Object render() {
     final items = ValueNotifier<List<_Item>>([]);
     items.value = List.generate(10000, (i) => _Item());
-    return h('div', [
+    return el('div', children: [
       ErrorReporter(errorReport),
       _LongListWidget(items),
     ]);
@@ -72,7 +72,7 @@ class _LongListWidget extends Component {
     final list = <Object>[];
     for (var i = 0; i < items1.length; i++) {
       final item = items1[i];
-      final li = h('li', '$item');
+      final li = el('li', child: '$item');
       list.add(vKey(item.id, li));
     }
 
@@ -171,30 +171,30 @@ class _LongListWidget extends Component {
       event.preventDefault();
     }
 
-    return h('div', [
-      h('p', [
+    return el('div', children: [
+      el('p', children: [
         'Non UI action:',
         _Info(nonUiInfo),
       ]),
-      h('p', [
+      el('p', children: [
         'UI action:',
         _Info(uiInfo),
       ]),
-      h('p', 'Items count: ${items1.length}'),
-      h('p', [
+      el('p', child: 'Items count: ${items1.length}'),
+      el('p', children: [
         'Count',
-        h('input', {
-          'type': 'text',
-          'value': '${count.value}',
-        }, {
-          'change': onChangeCount
-        }),
+        el('input',
+            attributes: {
+              'type': 'text',
+              'value': '${count.value}',
+            },
+            onChange: onChangeCount),
       ]),
-      h('p', [
-        h('button', 'Insert', {'click': insert}),
-        h('button', 'Remove', {'click': remove}),
+      el('p', children: [
+        el('button', child: 'Insert', onClick: insert),
+        el('button', child: 'Remove', onClick: remove),
       ]),
-      h('ul', list),
+      el('ul', children: list),
     ]);
   }
 }
